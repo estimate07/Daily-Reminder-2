@@ -112,25 +112,25 @@ fun MainScreen(
             }
 
             // History Drawer Overlay
-            if (selectedArchiveDay != null) {
+            selectedArchiveDay?.let { archiveDay ->
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.BottomCenter
                 ) {
                     HistoryDrawer(
-                        day = selectedArchiveDay!!,
+                        day = archiveDay,
                         onClose = { viewModel.selectArchiveDay(null) }
                     )
                 }
             }
 
             // Edit Title Dialog
-            if (editingSlot != null) {
+            editingSlot?.let { slot ->
                 EditTitleDialog(
-                    slot = editingSlot!!,
+                    slot = slot,
                     onDismiss = { viewModel.closeEditDialog() },
                     onSave = { newTitle ->
-                        viewModel.saveSlotTitle(editingSlot!!.id, newTitle)
+                        viewModel.saveSlotTitle(slot.id, newTitle)
                     }
                 )
             }
