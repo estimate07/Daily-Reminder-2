@@ -44,6 +44,9 @@ class RovioViewModel(
     val freezeShields: StateFlow<Int> = repository.freezeShields
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 1)
 
+    val selectedThemeIndex: StateFlow<Int> = repository.selectedThemeIndex
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
+
     private val _selectedTab = MutableStateFlow(0) // 0: TODAY, 1: TIME VAULT, 2: AUDIT
     val selectedTab: StateFlow<Int> = _selectedTab.asStateFlow()
 
@@ -79,6 +82,12 @@ class RovioViewModel(
 
     fun selectTab(index: Int) {
         _selectedTab.value = index
+    }
+
+    fun selectTheme(index: Int) {
+        viewModelScope.launch {
+            repository.setSelectedTheme(index)
+        }
     }
 
     fun selectArchiveDay(day: ArchiveDay?) {

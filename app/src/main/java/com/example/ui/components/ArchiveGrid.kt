@@ -7,9 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -30,14 +28,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.ArchiveDay
-import com.example.ui.theme.Clay
-import com.example.ui.theme.DividerDark
-import com.example.ui.theme.Ink
+import com.example.ui.theme.AppTheme
 import com.example.ui.theme.Inter
 import com.example.ui.theme.JetBrainsMono
-import com.example.ui.theme.MutedText
-import com.example.ui.theme.Paper
-import com.example.ui.theme.SignalRed
 
 @Composable
 fun ArchiveGrid(
@@ -45,6 +38,8 @@ fun ArchiveGrid(
     onDayClick: (ArchiveDay) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val colors = AppTheme.colors
+
     Column(modifier = modifier.fillMaxWidth()) {
         // Separator Row
         Row(
@@ -57,21 +52,21 @@ fun ArchiveGrid(
                 modifier = Modifier
                     .weight(1f)
                     .height(1.dp)
-                    .background(DividerDark)
+                    .background(colors.dividerDark)
             )
             Text(
                 text = " ARCHIVE — 30D ",
                 fontFamily = Inter,
                 fontSize = 8.sp,
                 fontWeight = FontWeight.Bold,
-                color = MutedText,
+                color = colors.mutedText,
                 letterSpacing = 0.8.sp
             )
             Box(
                 modifier = Modifier
                     .weight(1f)
                     .height(1.dp)
-                    .background(DividerDark)
+                    .background(colors.dividerDark)
             )
         }
 
@@ -106,12 +101,14 @@ fun ArchiveCell(
     day: ArchiveDay,
     onClick: () -> Unit
 ) {
+    val colors = AppTheme.colors
+
     Box(
         modifier = Modifier
             .aspectRatio(1f)
-            .hardShadow(shadowColor = Ink, offsetX = 2.dp, offsetY = 2.dp, shape = WobblyGridShape)
-            .background(Paper, WobblyGridShape)
-            .border(1.5.dp, Ink, WobblyGridShape)
+            .hardShadow(shadowColor = colors.ink, offsetX = 2.dp, offsetY = 2.dp, shape = WobblyGridShape)
+            .background(colors.paper, WobblyGridShape)
+            .border(1.5.dp, colors.ink, WobblyGridShape)
             .clickable { onClick() }
             .padding(4.dp),
         contentAlignment = Alignment.Center
@@ -121,7 +118,7 @@ fun ArchiveCell(
             text = day.dayNumber.toString(),
             fontFamily = JetBrainsMono,
             fontSize = 9.sp,
-            color = Ink,
+            color = colors.ink,
             modifier = Modifier.align(Alignment.TopStart)
         )
 
@@ -133,7 +130,7 @@ fun ArchiveCell(
                         .align(Alignment.BottomCenter)
                         .padding(bottom = 2.dp)
                         .size(6.dp)
-                        .background(Clay, CircleShape)
+                        .background(colors.clay, CircleShape)
                 )
             }
             2 -> {
@@ -143,8 +140,8 @@ fun ArchiveCell(
                         .padding(bottom = 2.dp),
                     horizontalArrangement = Arrangement.spacedBy(3.dp)
                 ) {
-                    Box(modifier = Modifier.size(6.dp).background(Clay, CircleShape))
-                    Box(modifier = Modifier.size(6.dp).background(Clay, CircleShape))
+                    Box(modifier = Modifier.size(6.dp).background(colors.clay, CircleShape))
+                    Box(modifier = Modifier.size(6.dp).background(colors.clay, CircleShape))
                 }
             }
             3 -> {
@@ -152,12 +149,12 @@ fun ArchiveCell(
                     modifier = Modifier
                         .align(Alignment.Center)
                         .size(8.dp)
-                        .background(SignalRed, CircleShape)
+                        .background(colors.signalRed, CircleShape)
                 )
                 Icon(
                     imageVector = Icons.Default.Check,
                     contentDescription = "3/3 Complete",
-                    tint = SignalRed,
+                    tint = colors.signalRed,
                     modifier = Modifier
                         .size(8.dp)
                         .align(Alignment.TopEnd)

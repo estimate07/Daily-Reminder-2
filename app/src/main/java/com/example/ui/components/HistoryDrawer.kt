@@ -24,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.testTag
@@ -32,14 +31,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.ArchiveDay
-import com.example.ui.theme.Ink
+import com.example.ui.theme.AppTheme
 import com.example.ui.theme.InstrumentSerif
 import com.example.ui.theme.Inter
 import com.example.ui.theme.JetBrainsMono
-import com.example.ui.theme.MutedText
-import com.example.ui.theme.Paper
-import com.example.ui.theme.Sage
-import com.example.ui.theme.SignalRed
 
 @Composable
 fun HistoryDrawer(
@@ -47,26 +42,28 @@ fun HistoryDrawer(
     onClose: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val colors = AppTheme.colors
     val titlesList = if (day.titles.isBlank()) emptyList() else day.titles.split("|")
+
+    val drawerInk = colors.ink
 
     Box(
         modifier = modifier
             .fillMaxWidth()
             .drawBehind {
-                // Top shadow
                 drawRect(
-                    color = Ink,
+                    color = drawerInk,
                     topLeft = androidx.compose.ui.geometry.Offset(0f, -12f),
                     size = androidx.compose.ui.geometry.Size(size.width, 12f)
                 )
             }
             .background(
-                Paper,
+                colors.paper,
                 RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
             )
             .border(
                 2.5.dp,
-                Ink,
+                colors.ink,
                 RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
             )
             .paperGrainOverlay(0.04f)
@@ -74,7 +71,6 @@ fun HistoryDrawer(
             .testTag("history_drawer")
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            // Torn edge top decoration zigzag path
             Canvas(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -89,10 +85,9 @@ fun HistoryDrawer(
                     val y = if (i % 2 == 0) 0f else size.height
                     path.lineTo(i * stepW, y)
                 }
-                drawPath(path = path, color = Ink, style = Stroke(width = 1.5.dp.toPx()))
+                drawPath(path = path, color = drawerInk, style = Stroke(width = 1.5.dp.toPx()))
             }
 
-            // Header Row spaceBetween
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -103,20 +98,20 @@ fun HistoryDrawer(
                     fontFamily = JetBrainsMono,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Ink
+                    color = colors.ink
                 )
 
                 Box(
                     modifier = Modifier
                         .size(24.dp)
-                        .border(1.5.dp, Ink, CircleShape)
+                        .border(1.5.dp, colors.ink, CircleShape)
                         .clickable { onClose() },
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = Icons.Default.Close,
                         contentDescription = "Close",
-                        tint = Ink,
+                        tint = colors.ink,
                         modifier = Modifier.size(14.dp)
                     )
                 }
@@ -124,7 +119,6 @@ fun HistoryDrawer(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Body: 3 rows for Morning, Afternoon, Evening
             val labels = listOf("MORNING", "AFTERNOON", "EVENING")
             for (i in 0..2) {
                 val numStr = "0${i + 1}"
@@ -141,7 +135,7 @@ fun HistoryDrawer(
                         text = numStr,
                         fontFamily = InstrumentSerif,
                         fontSize = 18.sp,
-                        color = MutedText
+                        color = colors.mutedText
                     )
                     Spacer(modifier = Modifier.width(12.dp))
                     Column(modifier = Modifier.weight(1f)) {
@@ -150,23 +144,23 @@ fun HistoryDrawer(
                             fontFamily = Inter,
                             fontSize = 7.sp,
                             fontWeight = FontWeight.Bold,
-                            color = MutedText
+                            color = colors.mutedText
                         )
                         Text(
                             text = title,
                             fontFamily = Inter,
                             fontSize = 13.sp,
-                            color = Ink
+                            color = colors.ink
                         )
                     }
                     Box(
                         modifier = Modifier
                             .size(10.dp)
                             .background(
-                                if (isCompleted) SignalRed else Sage.copy(alpha = 0.3f),
+                                if (isCompleted) colors.signalRed else colors.sage.copy(alpha = 0.3f),
                                 CircleShape
                             )
-                            .border(1.dp, Ink, CircleShape)
+                            .border(1.dp, colors.ink, CircleShape)
                     )
                 }
             }

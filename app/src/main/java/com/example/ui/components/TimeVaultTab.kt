@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
@@ -29,7 +28,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -37,16 +35,10 @@ import androidx.compose.ui.unit.sp
 import com.example.data.RushAttempt
 import com.example.data.ShortSlot
 import com.example.data.StackedAttempt
-import com.example.ui.theme.Clay
-import com.example.ui.theme.DividerDark
-import com.example.ui.theme.Ink
+import com.example.ui.theme.AppTheme
 import com.example.ui.theme.InstrumentSerif
 import com.example.ui.theme.Inter
 import com.example.ui.theme.JetBrainsMono
-import com.example.ui.theme.MutedText
-import com.example.ui.theme.Paper
-import com.example.ui.theme.Sage
-import com.example.ui.theme.SignalRed
 import com.example.util.IstTimeUtils
 import kotlinx.coroutines.delay
 import java.util.Locale
@@ -60,6 +52,7 @@ fun TimeVaultTab(
     onClearToast: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val colors = AppTheme.colors
     var currentTime by remember { mutableLongStateOf(System.currentTimeMillis()) }
 
     LaunchedEffect(Unit) {
@@ -83,14 +76,14 @@ fun TimeVaultTab(
             .testTag("time_vault_tab"),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // Optional Toast banner inside Time Vault
+        // Toast banner inside Time Vault
         if (toastMessage != null) {
             item {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(SignalRed, RoundedCornerShape(8.dp))
-                        .border(1.5.dp, Ink, RoundedCornerShape(8.dp))
+                        .background(colors.signalRed, RoundedCornerShape(8.dp))
+                        .border(1.5.dp, colors.ink, RoundedCornerShape(8.dp))
                         .padding(12.dp)
                 ) {
                     Text(
@@ -98,7 +91,7 @@ fun TimeVaultTab(
                         fontFamily = JetBrainsMono,
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Paper
+                        color = colors.paper
                     )
                 }
             }
@@ -111,7 +104,7 @@ fun TimeVaultTab(
                 fontFamily = Inter,
                 fontSize = 10.sp,
                 fontWeight = FontWeight.Bold,
-                color = Paper,
+                color = colors.paper,
                 letterSpacing = 0.8.sp
             )
         }
@@ -134,7 +127,7 @@ fun TimeVaultTab(
                     fontFamily = Inter,
                     fontSize = 9.sp,
                     fontWeight = FontWeight.Bold,
-                    color = MutedText,
+                    color = colors.mutedText,
                     letterSpacing = 0.8.sp
                 )
             }
@@ -142,8 +135,8 @@ fun TimeVaultTab(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Paper, RoundedCornerShape(6.dp))
-                        .border(1.5.dp, Ink, RoundedCornerShape(6.dp))
+                        .background(colors.paper, RoundedCornerShape(6.dp))
+                        .border(1.5.dp, colors.ink, RoundedCornerShape(6.dp))
                         .padding(10.dp)
                 ) {
                     Row(
@@ -157,21 +150,21 @@ fun TimeVaultTab(
                                 fontFamily = Inter,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = Ink
+                                color = colors.ink
                             )
                             val earlyMin = (rush.earlyBy / 60000) + 1
                             Text(
                                 text = "Attempted ${earlyMin}m early",
                                 fontFamily = JetBrainsMono,
                                 fontSize = 10.sp,
-                                color = SignalRed
+                                color = colors.signalRed
                             )
                         }
                         Text(
                             text = IstTimeUtils.formatShortTime(rush.time),
                             fontFamily = JetBrainsMono,
                             fontSize = 10.sp,
-                            color = MutedText
+                            color = colors.mutedText
                         )
                     }
                 }
@@ -186,7 +179,7 @@ fun TimeVaultTab(
                     fontFamily = Inter,
                     fontSize = 9.sp,
                     fontWeight = FontWeight.Bold,
-                    color = MutedText,
+                    color = colors.mutedText,
                     letterSpacing = 0.8.sp
                 )
             }
@@ -194,8 +187,8 @@ fun TimeVaultTab(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Paper, RoundedCornerShape(6.dp))
-                        .border(1.5.dp, Ink, RoundedCornerShape(6.dp))
+                        .background(colors.paper, RoundedCornerShape(6.dp))
+                        .border(1.5.dp, colors.ink, RoundedCornerShape(6.dp))
                         .padding(10.dp)
                 ) {
                     Row(
@@ -209,21 +202,21 @@ fun TimeVaultTab(
                                 fontFamily = Inter,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = Ink
+                                color = colors.ink
                             )
                             val waitMin = (stacked.waitLeft / 60000) + 1
                             Text(
                                 text = "${waitMin}m cooldown remaining",
                                 fontFamily = JetBrainsMono,
                                 fontSize = 10.sp,
-                                color = Clay
+                                color = colors.clay
                             )
                         }
                         Text(
                             text = IstTimeUtils.formatShortTime(stacked.time),
                             fontFamily = JetBrainsMono,
                             fontSize = 10.sp,
-                            color = MutedText
+                            color = colors.mutedText
                         )
                     }
                 }
@@ -234,6 +227,8 @@ fun TimeVaultTab(
 
 @Composable
 fun SlotVaultCard(slot: ShortSlot, currentTime: Long) {
+    val colors = AppTheme.colors
+
     val isDoing = slot.status == "DOING"
     val isDone = slot.status == "DONE"
 
@@ -259,9 +254,9 @@ fun SlotVaultCard(slot: ShortSlot, currentTime: Long) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .hardShadow(shadowColor = Ink, offsetX = 4.dp, offsetY = 4.dp, shape = WobblyGridShape)
-            .background(Paper, WobblyGridShape)
-            .border(2.dp, Ink, WobblyGridShape)
+            .hardShadow(shadowColor = colors.ink, offsetX = 4.dp, offsetY = 4.dp, shape = WobblyGridShape)
+            .background(colors.paper, WobblyGridShape)
+            .border(2.dp, colors.ink, WobblyGridShape)
             .padding(14.dp)
     ) {
         Row(
@@ -275,7 +270,7 @@ fun SlotVaultCard(slot: ShortSlot, currentTime: Long) {
                         text = "0${slot.id}",
                         fontFamily = InstrumentSerif,
                         fontSize = 24.sp,
-                        color = Ink
+                        color = colors.ink
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
@@ -283,7 +278,7 @@ fun SlotVaultCard(slot: ShortSlot, currentTime: Long) {
                         fontFamily = Inter,
                         fontSize = 9.sp,
                         fontWeight = FontWeight.Bold,
-                        color = MutedText
+                        color = colors.mutedText
                     )
                 }
                 Spacer(modifier = Modifier.height(2.dp))
@@ -292,14 +287,14 @@ fun SlotVaultCard(slot: ShortSlot, currentTime: Long) {
                     fontFamily = Inter,
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Medium,
-                    color = Ink
+                    color = colors.ink
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = statusText,
                     fontFamily = JetBrainsMono,
                     fontSize = 10.sp,
-                    color = if (isDoing && elapsedMs >= requiredMs) Sage else if (isDoing) SignalRed else MutedText
+                    color = if (isDoing && elapsedMs >= requiredMs) colors.sage else if (isDoing) colors.signalRed else colors.mutedText
                 )
             }
 
@@ -310,8 +305,8 @@ fun SlotVaultCard(slot: ShortSlot, currentTime: Long) {
                 CircularProgressIndicator(
                     progress = { progress },
                     modifier = Modifier.fillMaxSize(),
-                    color = if (isDone) SignalRed else Sage,
-                    trackColor = Ink.copy(alpha = 0.1f),
+                    color = if (isDone) colors.signalRed else colors.sage,
+                    trackColor = colors.ink.copy(alpha = 0.1f),
                     strokeWidth = 4.dp
                 )
                 Text(
@@ -319,7 +314,7 @@ fun SlotVaultCard(slot: ShortSlot, currentTime: Long) {
                     fontFamily = JetBrainsMono,
                     fontSize = 9.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Ink
+                    color = colors.ink
                 )
             }
         }
@@ -328,6 +323,8 @@ fun SlotVaultCard(slot: ShortSlot, currentTime: Long) {
 
 @Composable
 fun DeepWorkSection(slots: List<ShortSlot>, currentTime: Long) {
+    val colors = AppTheme.colors
+
     var totalFocusedMs = 0L
     val slotFocusedTimes = mutableMapOf<Int, Long>()
 
@@ -347,9 +344,9 @@ fun DeepWorkSection(slots: List<ShortSlot>, currentTime: Long) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .hardShadow(shadowColor = Ink, offsetX = 4.dp, offsetY = 4.dp, shape = WobblyGridShape)
-            .background(Paper, WobblyGridShape)
-            .border(2.dp, Ink, WobblyGridShape)
+            .hardShadow(shadowColor = colors.ink, offsetX = 4.dp, offsetY = 4.dp, shape = WobblyGridShape)
+            .background(colors.paper, WobblyGridShape)
+            .border(2.dp, colors.ink, WobblyGridShape)
             .padding(14.dp)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -363,14 +360,14 @@ fun DeepWorkSection(slots: List<ShortSlot>, currentTime: Long) {
                     fontFamily = Inter,
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Ink
+                    color = colors.ink
                 )
                 Text(
                     text = String.format(Locale.US, "%.1fh / 3h deep work", totalHours),
                     fontFamily = JetBrainsMono,
                     fontSize = 11.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Ink
+                    color = colors.ink
                 )
             }
 
@@ -382,13 +379,12 @@ fun DeepWorkSection(slots: List<ShortSlot>, currentTime: Long) {
                     .fillMaxWidth()
                     .height(8.dp)
                     .clip(RoundedCornerShape(4.dp)),
-                color = SignalRed,
-                trackColor = Ink.copy(alpha = 0.15f)
+                color = colors.signalRed,
+                trackColor = colors.ink.copy(alpha = 0.15f)
             )
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            // Per slot focused time breakdown
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -400,7 +396,7 @@ fun DeepWorkSection(slots: List<ShortSlot>, currentTime: Long) {
                         text = "Slot 0${slot.id}: ${mins}m",
                         fontFamily = JetBrainsMono,
                         fontSize = 9.sp,
-                        color = MutedText
+                        color = colors.mutedText
                     )
                 }
             }

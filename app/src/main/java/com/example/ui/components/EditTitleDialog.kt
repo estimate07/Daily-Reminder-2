@@ -29,12 +29,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.data.ShortSlot
-import com.example.ui.theme.Ink
+import com.example.ui.theme.AppTheme
 import com.example.ui.theme.Inter
 import com.example.ui.theme.JetBrainsMono
-import com.example.ui.theme.MutedText
-import com.example.ui.theme.Paper
-import com.example.ui.theme.SignalRed
 
 @Composable
 fun EditTitleDialog(
@@ -42,15 +39,16 @@ fun EditTitleDialog(
     onDismiss: () -> Unit,
     onSave: (String) -> Unit
 ) {
+    val colors = AppTheme.colors
     var titleText by remember { mutableStateOf(slot.title) }
 
     Dialog(onDismissRequest = { onDismiss() }) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .hardShadow(shadowColor = Ink, offsetX = 6.dp, offsetY = 6.dp, shape = WobblyGridShape)
-                .background(Paper, WobblyGridShape)
-                .border(2.5.dp, Ink, WobblyGridShape)
+                .hardShadow(shadowColor = colors.ink, offsetX = 6.dp, offsetY = 6.dp, shape = WobblyGridShape)
+                .background(colors.paper, WobblyGridShape)
+                .border(2.5.dp, colors.ink, WobblyGridShape)
                 .paperGrainOverlay(0.04f)
                 .padding(20.dp)
                 .testTag("edit_title_dialog")
@@ -61,7 +59,7 @@ fun EditTitleDialog(
                     fontFamily = Inter,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Ink,
+                    color = colors.ink,
                     letterSpacing = 0.5.sp
                 )
 
@@ -71,8 +69,8 @@ fun EditTitleDialog(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(48.dp)
-                        .background(Paper, RoundedCornerShape(4.dp))
-                        .border(1.5.dp, Ink, RoundedCornerShape(4.dp))
+                        .background(colors.paper, RoundedCornerShape(4.dp))
+                        .border(1.5.dp, colors.ink, RoundedCornerShape(4.dp))
                         .padding(horizontal = 12.dp),
                     contentAlignment = Alignment.CenterStart
                 ) {
@@ -84,7 +82,7 @@ fun EditTitleDialog(
                         textStyle = TextStyle(
                             fontFamily = Inter,
                             fontSize = 14.sp,
-                            color = Ink
+                            color = colors.ink
                         ),
                         singleLine = true,
                         modifier = Modifier
@@ -99,7 +97,7 @@ fun EditTitleDialog(
                     text = "${titleText.length}/42 characters",
                     fontFamily = JetBrainsMono,
                     fontSize = 9.sp,
-                    color = MutedText,
+                    color = colors.mutedText,
                     modifier = Modifier.align(Alignment.End)
                 )
 
@@ -118,7 +116,7 @@ fun EditTitleDialog(
                             fontFamily = Inter,
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
-                            color = MutedText
+                            color = colors.mutedText
                         )
                     }
 
@@ -133,7 +131,7 @@ fun EditTitleDialog(
                             fontFamily = Inter,
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
-                            color = SignalRed
+                            color = colors.signalRed
                         )
                     }
                 }

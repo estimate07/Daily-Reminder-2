@@ -8,6 +8,7 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +16,6 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -35,19 +35,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.ui.theme.Ink
+import com.example.ui.theme.AppTheme
 import com.example.ui.theme.InstrumentSerif
 import com.example.ui.theme.Inter
 import com.example.ui.theme.JetBrainsMono
-import com.example.ui.theme.MutedText
-import com.example.ui.theme.Paper
-import com.example.ui.theme.Sage
-import com.example.ui.theme.SignalRed
 import com.example.util.IstTimeUtils
 import kotlinx.coroutines.delay
 
@@ -56,8 +51,11 @@ import kotlinx.coroutines.delay
 fun HeaderComponent(
     streak: Int,
     freezeShields: Int,
+    onThemeClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
+    val colors = AppTheme.colors
+
     var countdownMillis by remember { mutableLongStateOf(IstTimeUtils.getMillisTillNext1AmIst()) }
 
     LaunchedEffect(Unit) {
@@ -97,9 +95,9 @@ fun HeaderComponent(
                 Text(
                     text = streak.toString(),
                     fontFamily = InstrumentSerif,
-                    fontSize = 40.sp,
-                    color = Paper,
-                    lineHeight = 40.sp
+                    fontSize = 38.sp,
+                    color = colors.paper,
+                    lineHeight = 38.sp
                 )
                 if (streak > 7) {
                     Spacer(modifier = Modifier.width(4.dp))
@@ -107,15 +105,15 @@ fun HeaderComponent(
                         modifier = Modifier
                             .size(6.dp)
                             .alpha(pulseAlpha)
-                            .background(SignalRed, CircleShape)
+                            .background(colors.signalRed, CircleShape)
                     )
                 }
             }
             // Tally marks (max 14 displayed in max 60dp wide flow row)
             FlowRow(
                 modifier = Modifier
-                    .width(60.dp)
-                    .padding(vertical = 2.dp),
+                    .width(55.dp)
+                    .padding(vertical = 1.dp),
                 horizontalArrangement = Arrangement.spacedBy(3.dp),
                 verticalArrangement = Arrangement.spacedBy(2.dp)
             ) {
@@ -124,8 +122,8 @@ fun HeaderComponent(
                     Box(
                         modifier = Modifier
                             .width(1.5.dp)
-                            .height(10.dp)
-                            .background(Paper)
+                            .height(9.dp)
+                            .background(colors.paper)
                     )
                 }
             }
@@ -134,12 +132,12 @@ fun HeaderComponent(
                 fontFamily = Inter,
                 fontSize = 8.sp,
                 fontWeight = FontWeight.Bold,
-                color = MutedText,
+                color = colors.mutedText,
                 letterSpacing = 0.5.sp
             )
         }
 
-        // CENTER: Weekly (Feature 12) - 21 dots in 2 rows (11 + 10)
+        // CENTER: Weekly dots + Theme Switcher Pill
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.testTag("weekly_header")
@@ -151,40 +149,42 @@ fun HeaderComponent(
                     val isFilled = i <= filledCount
                     Box(
                         modifier = Modifier
-                            .size(6.dp)
-                            .background(if (isFilled) Paper else Color.Transparent, CircleShape)
-                            .border(1.2.dp, Paper, CircleShape)
+                            .size(5.dp)
+                            .background(if (isFilled) colors.paper else Color.Transparent, CircleShape)
+                            .border(1.dp, colors.paper, CircleShape)
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(3.dp))
+            Spacer(modifier = Modifier.height(2.dp))
             // Row 2: 10 dots
             Row(horizontalArrangement = Arrangement.spacedBy(3.dp)) {
                 for (i in 12..21) {
                     val isFilled = i <= filledCount
                     Box(
                         modifier = Modifier
-                            .size(6.dp)
-                            .background(if (isFilled) Paper else Color.Transparent, CircleShape)
-                            .border(1.2.dp, Paper, CircleShape)
+                            .size(5.dp)
+                            .background(if (isFilled) colors.paper else Color.Transparent, CircleShape)
+                            .border(1.dp, colors.paper, CircleShape)
                     )
                 }
             }
             Spacer(modifier = Modifier.height(4.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
+
+            // THEME PILL (Clickable Theme Switcher)
+            Box(
+                modifier = Modifier
+                    .background(colors.deskSurface)
+                    .border(1.dp, colors.signalRed)
+                    .clickable { onThemeClick() }
+                    .padding(horizontal = 6.dp, vertical = 2.dp)
+                    .testTag("open_theme_dialog_button")
+            ) {
                 Text(
-                    text = "$filledCount/21 ",
+                    text = "THEME: ${colors.name.take(10)}",
                     fontFamily = JetBrainsMono,
-                    fontSize = 10.sp,
-                    color = Paper
-                )
-                Text(
-                    text = "WEEK",
-                    fontFamily = Inter,
                     fontSize = 8.sp,
                     fontWeight = FontWeight.Bold,
-                    color = MutedText,
-                    letterSpacing = 0.5.sp
+                    color = colors.signalRed
                 )
             }
         }
@@ -201,9 +201,9 @@ fun HeaderComponent(
             ) {
                 Box(
                     modifier = Modifier
-                        .size(width = 24.dp, height = 28.dp)
-                        .background(Sage, ShieldShape)
-                        .border(1.5.dp, Ink, ShieldShape),
+                        .size(width = 22.dp, height = 26.dp)
+                        .background(colors.sage, ShieldShape)
+                        .border(1.5.dp, colors.ink, ShieldShape),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -211,7 +211,7 @@ fun HeaderComponent(
                         fontFamily = JetBrainsMono,
                         fontSize = 11.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Ink
+                        color = colors.ink
                     )
                 }
                 Spacer(modifier = Modifier.width(4.dp))
@@ -220,7 +220,7 @@ fun HeaderComponent(
                     fontFamily = Inter,
                     fontSize = 7.sp,
                     fontWeight = FontWeight.Bold,
-                    color = MutedText,
+                    color = colors.mutedText,
                     letterSpacing = 0.5.sp
                 )
             }
@@ -233,14 +233,14 @@ fun HeaderComponent(
                     text = IstTimeUtils.formatCountdown(countdownMillis),
                     fontFamily = JetBrainsMono,
                     fontSize = 10.sp,
-                    color = if (isUrgent) SignalRed.copy(alpha = pulseAlpha) else Paper
+                    color = if (isUrgent) colors.signalRed.copy(alpha = pulseAlpha) else colors.paper
                 )
                 Text(
                     text = "TILL 1AM IST",
                     fontFamily = Inter,
                     fontSize = 7.sp,
                     fontWeight = FontWeight.Bold,
-                    color = MutedText,
+                    color = colors.mutedText,
                     letterSpacing = 0.5.sp
                 )
             }

@@ -21,9 +21,7 @@ import com.example.data.ShortSlot
 import com.example.ui.components.ArchiveGrid
 import com.example.ui.components.HeaderComponent
 import com.example.ui.components.MiddleStoryCards
-import com.example.ui.theme.Desk
-import com.example.ui.theme.DividerDark
-import com.example.ui.theme.Paper
+import com.example.ui.theme.AppTheme
 
 @Composable
 fun TodayScreen(
@@ -36,12 +34,15 @@ fun TodayScreen(
     onTitleClick: (ShortSlot) -> Unit,
     onHoldDoneConfirmed: (Int) -> Unit,
     onArchiveDayClick: (ArchiveDay) -> Unit,
+    onThemeClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
+    val colors = AppTheme.colors
+
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(Desk),
+            .background(colors.desk),
         contentAlignment = Alignment.TopCenter
     ) {
         Column(
@@ -53,10 +54,11 @@ fun TodayScreen(
                 .testTag("today_screen"),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Header 72dp
+            // Header 72dp with Theme Switcher trigger
             HeaderComponent(
                 streak = streak,
-                freezeShields = freezeShields
+                freezeShields = freezeShields,
+                onThemeClick = onThemeClick
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -78,13 +80,13 @@ fun TodayScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(2.dp)
-                    .background(DividerDark)
+                    .background(colors.dividerDark)
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(filledFraction)
                         .height(2.dp)
-                        .background(Paper)
+                        .background(colors.paper)
                 )
             }
 

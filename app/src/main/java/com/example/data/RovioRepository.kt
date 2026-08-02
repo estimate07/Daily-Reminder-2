@@ -22,6 +22,11 @@ class RovioRepository(
 
     val streak: Flow<Int> = userPreferencesManager.streak
     val freezeShields: Flow<Int> = userPreferencesManager.freezeShields
+    val selectedThemeIndex: Flow<Int> = userPreferencesManager.selectedThemeIndex
+
+    suspend fun setSelectedTheme(index: Int) {
+        userPreferencesManager.setSelectedTheme(index)
+    }
 
     suspend fun initializeAndCheckReset() {
         val currentIstDate = IstTimeUtils.getCurrentIstDateString()

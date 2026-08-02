@@ -19,12 +19,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.ui.theme.Desk
-import com.example.ui.theme.Ink
+import com.example.ui.theme.AppTheme
 import com.example.ui.theme.Inter
-import com.example.ui.theme.MutedText
-import com.example.ui.theme.Paper
-import com.example.ui.theme.SignalRed
 
 @Composable
 fun BottomNavTabBar(
@@ -32,12 +28,13 @@ fun BottomNavTabBar(
     onTabSelected: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val colors = AppTheme.colors
     val tabTitles = listOf("TODAY", "TIME VAULT", "AUDIT")
 
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .background(Desk)
+            .background(colors.desk)
             .navigationBarsPadding()
             .padding(12.dp)
             .testTag("bottom_nav_bar")
@@ -46,8 +43,8 @@ fun BottomNavTabBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(44.dp)
-                .background(Ink, RoundedCornerShape(8.dp))
-                .border(1.5.dp, Paper, RoundedCornerShape(8.dp))
+                .background(colors.ink, RoundedCornerShape(8.dp))
+                .border(1.5.dp, colors.paper, RoundedCornerShape(8.dp))
                 .padding(3.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
@@ -60,7 +57,7 @@ fun BottomNavTabBar(
                         .weight(1f)
                         .height(38.dp)
                         .background(
-                            if (isSelected) Paper else Ink,
+                            if (isSelected) colors.paper else colors.ink,
                             RoundedCornerShape(6.dp)
                         )
                         .clickable { onTabSelected(index) }
@@ -72,7 +69,7 @@ fun BottomNavTabBar(
                         fontFamily = Inter,
                         fontSize = 10.sp,
                         fontWeight = FontWeight.Bold,
-                        color = if (isSelected) Ink else Paper.copy(alpha = 0.6f),
+                        color = if (isSelected) colors.ink else colors.paper.copy(alpha = 0.6f),
                         letterSpacing = 0.5.sp
                     )
                 }

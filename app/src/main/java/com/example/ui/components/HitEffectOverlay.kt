@@ -18,15 +18,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
-import com.example.ui.theme.Ink
-import com.example.ui.theme.Paper
-import com.example.ui.theme.SignalRed
+import com.example.ui.theme.AppTheme
 import kotlin.random.Random
 
 @Composable
 fun HitEffectOverlay(
     modifier: Modifier = Modifier
 ) {
+    val colors = AppTheme.colors
+
     Box(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -67,8 +67,8 @@ fun HitEffectOverlay(
                         .offset(x = animX.value.dp, y = animY.value.dp)
                         .rotate(animRot.value)
                         .size(6.dp)
-                        .background(Paper, RectangleShape)
-                        .border(1.dp, Ink, RectangleShape)
+                        .background(colors.paper, RectangleShape)
+                        .border(1.dp, colors.ink, RectangleShape)
                 )
             } else {
                 Box(
@@ -76,7 +76,7 @@ fun HitEffectOverlay(
                         .offset(x = animX.value.dp, y = animY.value.dp)
                         .rotate(animRot.value)
                         .size(4.dp)
-                        .background(SignalRed, RectangleShape)
+                        .background(colors.signalRed, RectangleShape)
                 )
             }
         }
@@ -96,7 +96,7 @@ fun HitEffectOverlay(
                 modifier = Modifier
                     .offset(x = (targetX * animR.value).dp, y = (targetY * animR.value).dp)
                     .size(3.dp)
-                    .background(Ink, CircleShape)
+                    .background(colors.ink, CircleShape)
             )
         }
     }

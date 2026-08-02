@@ -18,10 +18,15 @@ class UserPreferencesManager(private val context: Context) {
         val STREAK = intPreferencesKey("streak")
         val FREEZE_SHIELDS = intPreferencesKey("freeze_shields")
         val LAST_RESET_DATE = stringPreferencesKey("last_reset_date")
+        val SELECTED_THEME = intPreferencesKey("selected_theme")
     }
 
     val lastArmTime: Flow<Long> = context.dataStore.data.map { prefs ->
         prefs[LAST_ARM_TIME] ?: 0L
+    }
+
+    val selectedThemeIndex: Flow<Int> = context.dataStore.data.map { prefs ->
+        prefs[SELECTED_THEME] ?: 0
     }
 
     val streak: Flow<Int> = context.dataStore.data.map { prefs ->
@@ -57,6 +62,12 @@ class UserPreferencesManager(private val context: Context) {
     suspend fun setLastResetDate(dateStr: String) {
         context.dataStore.edit { prefs ->
             prefs[LAST_RESET_DATE] = dateStr
+        }
+    }
+
+    suspend fun setSelectedTheme(index: Int) {
+        context.dataStore.edit { prefs ->
+            prefs[SELECTED_THEME] = index
         }
     }
 }

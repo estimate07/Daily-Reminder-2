@@ -40,7 +40,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -54,14 +53,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.ShortSlot
-import com.example.ui.theme.Ink
+import com.example.ui.theme.AppTheme
 import com.example.ui.theme.InstrumentSerif
 import com.example.ui.theme.Inter
 import com.example.ui.theme.JetBrainsMono
-import com.example.ui.theme.MutedText
-import com.example.ui.theme.Paper
-import com.example.ui.theme.Sage
-import com.example.ui.theme.SignalRed
 import com.example.util.IstTimeUtils
 import kotlinx.coroutines.delay
 
@@ -74,6 +69,8 @@ fun MiddleStoryCards(
     showHitEffect: Boolean = false,
     modifier: Modifier = Modifier
 ) {
+    val colors = AppTheme.colors
+
     val overallStatus = when {
         slots.all { it.status == "DONE" } -> "DONE"
         slots.any { it.status == "DOING" } -> "DOING"
@@ -87,7 +84,7 @@ fun MiddleStoryCards(
             fontFamily = Inter,
             fontSize = 9.sp,
             fontWeight = FontWeight.Bold,
-            color = MutedText,
+            color = colors.mutedText,
             letterSpacing = 0.8.sp,
             modifier = Modifier.padding(bottom = 8.dp)
         )
@@ -160,12 +157,14 @@ fun SingleStoryCard(
     onTitleClick: () -> Unit,
     onHoldDoneConfirmed: () -> Unit
 ) {
+    val colors = AppTheme.colors
+
     val isDone = slot.status == "DONE"
     val isDoing = slot.status == "DOING"
 
-    val borderColor = if (isDone) SignalRed else Ink
-    val shadowColor = if (isDone) SignalRed else Ink
-    val bgColor = if (isDone) Paper.copy(alpha = 0.96f) else Paper
+    val borderColor = if (isDone) colors.signalRed else colors.ink
+    val shadowColor = if (isDone) colors.signalRed else colors.ink
+    val bgColor = if (isDone) colors.paper.copy(alpha = 0.96f) else colors.paper
 
     var holdProgress by remember { mutableFloatStateOf(0f) }
     var isHolding by remember { mutableStateOf(false) }
@@ -216,7 +215,7 @@ fun SingleStoryCard(
                     text = numStr,
                     fontFamily = InstrumentSerif,
                     fontSize = 32.sp,
-                    color = if (slot.status == "TODO") Ink.copy(alpha = 0.2f) else Ink,
+                    color = if (slot.status == "TODO") colors.ink.copy(alpha = 0.2f) else colors.ink,
                     lineHeight = 32.sp
                 )
                 Spacer(modifier = Modifier.height(2.dp))
@@ -225,7 +224,7 @@ fun SingleStoryCard(
                     fontFamily = Inter,
                     fontSize = 7.sp,
                     fontWeight = FontWeight.Bold,
-                    color = MutedText,
+                    color = colors.mutedText,
                     letterSpacing = 0.5.sp
                 )
             }
@@ -246,13 +245,13 @@ fun SingleStoryCard(
                             fontFamily = Inter,
                             fontStyle = FontStyle.Italic,
                             fontSize = 13.sp,
-                            color = MutedText
+                            color = colors.mutedText
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Icon(
                             imageVector = Icons.Default.Edit,
                             contentDescription = "Edit title",
-                            tint = MutedText,
+                            tint = colors.mutedText,
                             modifier = Modifier.size(12.dp)
                         )
                     }
@@ -262,7 +261,7 @@ fun SingleStoryCard(
                         fontFamily = Inter,
                         fontWeight = FontWeight.Medium,
                         fontSize = 14.sp,
-                        color = Ink,
+                        color = colors.ink,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -282,7 +281,6 @@ fun SingleStoryCard(
                             detectTapGestures(
                                 onTap = {
                                     if (isDoing) {
-                                        // Tap on DOING attempt confirm
                                         onStatusClick()
                                     } else {
                                         onStatusClick()
@@ -300,19 +298,20 @@ fun SingleStoryCard(
                         }
                         .background(
                             when {
-                                isDone -> SignalRed
-                                isDoing -> Sage
+                                isDone -> colors.signalRed
+                                isDoing -> colors.sage
                                 else -> Color.Transparent
                             },
                             CircleShape
                         )
-                        .border(2.dp, Ink, CircleShape),
+                        .border(2.dp, colors.ink, CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
                     if (isDoing && holdProgress > 0f) {
+                        val strokeColor = colors.signalRed
                         Canvas(modifier = Modifier.fillMaxSize()) {
                             drawArc(
-                                color = SignalRed,
+                                color = strokeColor,
                                 startAngle = -90f,
                                 sweepAngle = 360f * holdProgress,
                                 useCenter = false,
@@ -326,7 +325,7 @@ fun SingleStoryCard(
                             Icon(
                                 imageVector = Icons.Default.Check,
                                 contentDescription = "DONE",
-                                tint = Paper,
+                                tint = colors.paper,
                                 modifier = Modifier.size(18.dp)
                             )
                         }
@@ -345,7 +344,7 @@ fun SingleStoryCard(
                                 modifier = Modifier
                                     .size(8.dp)
                                     .alpha(dotAlpha)
-                                    .background(Paper, CircleShape)
+                                    .background(colors.paper, CircleShape)
                             )
                         }
                         else -> {
@@ -360,7 +359,7 @@ fun SingleStoryCard(
                     fontFamily = JetBrainsMono,
                     fontSize = 7.sp,
                     fontWeight = FontWeight.Bold,
-                    color = MutedText,
+                    color = colors.mutedText,
                     letterSpacing = 0.5.sp
                 )
             }
@@ -372,7 +371,7 @@ fun SingleStoryCard(
                 text = "done ${IstTimeUtils.formatShortTime(slot.doneTime)}",
                 fontFamily = JetBrainsMono,
                 fontSize = 8.sp,
-                color = MutedText,
+                color = colors.mutedText,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(end = 4.dp, bottom = 2.dp)
@@ -386,6 +385,7 @@ fun StickFigureCameo(
     status: String,
     modifier: Modifier = Modifier
 ) {
+    val colors = AppTheme.colors
     val translateY = if (status == "DONE") (-6).dp else 0.dp
 
     Box(
@@ -393,6 +393,8 @@ fun StickFigureCameo(
             .offset(y = translateY)
             .size(24.dp)
     ) {
+        val figureInk = colors.ink
+        val figureRed = colors.signalRed
         Canvas(modifier = Modifier.fillMaxSize()) {
             val center = Offset(size.width / 2, size.height / 3)
             val headRadius = 6.dp.toPx()
@@ -404,7 +406,7 @@ fun StickFigureCameo(
                 center = center
             )
             drawCircle(
-                color = Ink,
+                color = figureInk,
                 radius = headRadius,
                 center = center,
                 style = Stroke(width = 1.5.dp.toPx())
@@ -412,7 +414,7 @@ fun StickFigureCameo(
 
             // Red dot accent
             drawCircle(
-                color = SignalRed,
+                color = figureRed,
                 radius = 1.5.dp.toPx(),
                 center = Offset(center.x + 3.dp.toPx(), center.y - 2.dp.toPx())
             )
@@ -421,7 +423,7 @@ fun StickFigureCameo(
             val bodyStart = Offset(center.x, center.y + headRadius)
             val bodyEnd = Offset(center.x, size.height - 2.dp.toPx())
             drawLine(
-                color = Ink,
+                color = figureInk,
                 start = bodyStart,
                 end = bodyEnd,
                 strokeWidth = 2.dp.toPx()

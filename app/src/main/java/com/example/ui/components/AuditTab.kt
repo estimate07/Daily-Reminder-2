@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -26,22 +25,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.data.ArchiveDay
-import com.example.ui.theme.Clay
-import com.example.ui.theme.Ink
-import com.example.ui.theme.InstrumentSerif
+import com.example.ui.theme.AppTheme
 import com.example.ui.theme.Inter
 import com.example.ui.theme.JetBrainsMono
-import com.example.ui.theme.MutedText
-import com.example.ui.theme.Paper
-import com.example.ui.theme.Sage
-import com.example.ui.theme.SignalRed
-import java.util.Locale
 
 @Composable
 fun AuditTab(
     archiveDays: List<ArchiveDay>,
     modifier: Modifier = Modifier
 ) {
+    val colors = AppTheme.colors
     val weekDays = listOf("MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN")
 
     LazyColumn(
@@ -57,7 +50,7 @@ fun AuditTab(
                 fontFamily = Inter,
                 fontSize = 10.sp,
                 fontWeight = FontWeight.Bold,
-                color = Paper,
+                color = colors.paper,
                 letterSpacing = 0.8.sp
             )
         }
@@ -84,17 +77,17 @@ fun AuditTab(
                 else -> "Grade C"
             }
             val gradeColor = when (legitCount) {
-                3 -> Sage
-                2 -> Clay
-                else -> SignalRed
+                3 -> colors.sage
+                2 -> colors.clay
+                else -> colors.signalRed
             }
 
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .hardShadow(shadowColor = Ink, offsetX = 4.dp, offsetY = 4.dp, shape = WobblyGridShape)
-                    .background(Paper, WobblyGridShape)
-                    .border(2.dp, Ink, WobblyGridShape)
+                    .hardShadow(shadowColor = colors.ink, offsetX = 4.dp, offsetY = 4.dp, shape = WobblyGridShape)
+                    .background(colors.paper, WobblyGridShape)
+                    .border(2.dp, colors.ink, WobblyGridShape)
                     .padding(14.dp)
             ) {
                 Column(modifier = Modifier.fillMaxWidth()) {
@@ -108,12 +101,12 @@ fun AuditTab(
                             fontFamily = Inter,
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Ink
+                            color = colors.ink
                         )
                         Box(
                             modifier = Modifier
                                 .background(gradeColor.copy(alpha = 0.2f), RoundedCornerShape(4.dp))
-                                .border(1.dp, Ink, RoundedCornerShape(4.dp))
+                                .border(1.dp, colors.ink, RoundedCornerShape(4.dp))
                                 .padding(horizontal = 8.dp, vertical = 2.dp)
                         ) {
                             Text(
@@ -121,7 +114,7 @@ fun AuditTab(
                                 fontFamily = JetBrainsMono,
                                 fontSize = 10.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = Ink
+                                color = colors.ink
                             )
                         }
                     }
@@ -145,13 +138,15 @@ fun AuditTab(
 
 @Composable
 fun AuditSlotPill(slotNum: Int, durationMs: Long, isLegit: Boolean) {
+    val colors = AppTheme.colors
+
     val mins = durationMs / 60000
     val hours = mins / 60
     val remMins = mins % 60
 
     val timeStr = if (hours > 0) "${hours}h${remMins}m" else "${mins}m"
     val tag = if (isLegit) "legit" else "rushed"
-    val tagColor = if (isLegit) Sage else Clay
+    val tagColor = if (isLegit) colors.sage else colors.clay
 
     Row(
         verticalAlignment = Alignment.CenterVertically
@@ -166,7 +161,7 @@ fun AuditSlotPill(slotNum: Int, durationMs: Long, isLegit: Boolean) {
             text = "0$slotNum $timeStr $tag",
             fontFamily = JetBrainsMono,
             fontSize = 9.sp,
-            color = Ink
+            color = colors.ink
         )
     }
 }
