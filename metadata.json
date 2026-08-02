@@ -1,0 +1,6 @@
+{
+  "name": "ROVIO DAILY 3",
+  "description": "Daily tracker for 3 YouTube shorts with hidden work timer lock and audit.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

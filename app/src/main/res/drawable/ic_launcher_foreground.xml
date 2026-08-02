@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Center card stack vector illustration for ROVIO DAILY 3 -->
+    <!-- Card 1 -->
+    <path
+        android:fillColor="#F5F3EF"
+        android:strokeColor="#0B0F19"
+        android:strokeWidth="2"
+        android:pathData="M28,30 h38 v22 h-38 z"/>
+    <!-- Card 2 -->
+    <path
+        android:fillColor="#8FA68E"
+        android:strokeColor="#0B0F19"
+        android:strokeWidth="2"
+        android:pathData="M34,44 h38 v22 h-38 z"/>
+    <!-- Card 3 -->
+    <path
+        android:fillColor="#E54D2E"
+        android:strokeColor="#0B0F19"
+        android:strokeWidth="2"
+        android:pathData="M42,58 h38 v22 h-38 z"/>
+    <!-- Large 3 badge -->
+    <path
+        android:fillColor="#F5F3EF"
+        android:strokeColor="#0B0F19"
+        android:strokeWidth="1.5"
+        android:pathData="M66,24 a12,12 0 1,1 0,24 a12,12 0 1,1 0,-24"/>
+    <!-- Inner check mark on Card 3 -->
+    <path
+        android:strokeColor="#F5F3EF"
+        android:strokeWidth="3"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M54,69 L59,74 L70,63"/>
+</vector>
