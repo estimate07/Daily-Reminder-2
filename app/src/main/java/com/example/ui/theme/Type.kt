@@ -9,18 +9,15 @@ import androidx.compose.ui.unit.sp
 import com.example.R
 
 val InstrumentSerif = FontFamily(
-    Font(R.font.instrument_serif, FontWeight.Normal)
+    Font(R.font.instrument_serif)
 )
 
 val Inter = FontFamily(
-    Font(R.font.inter, FontWeight.Normal),
-    Font(R.font.inter, FontWeight.Medium),
-    Font(R.font.inter, FontWeight.Bold)
+    Font(R.font.inter)
 )
 
 val JetBrainsMono = FontFamily(
-    Font(R.font.jetbrains_mono, FontWeight.Normal),
-    Font(R.font.jetbrains_mono, FontWeight.Bold)
+    Font(R.font.jetbrains_mono)
 )
 
 val AppTypography = Typography(
