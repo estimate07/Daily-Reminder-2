@@ -2,12 +2,15 @@ package com.example.data
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
+import java.io.IOException
 
 private val Context.dataStore by preferencesDataStore(name = "user_preferences")
 
@@ -21,23 +24,31 @@ class UserPreferencesManager(private val context: Context) {
         val SELECTED_THEME = intPreferencesKey("selected_theme")
     }
 
-    val lastArmTime: Flow<Long> = context.dataStore.data.map { prefs ->
+    private val safeDataStore = context.dataStore.data.catch { exception ->
+        if (exception is IOException) {
+            emit(emptyPreferences())
+        } else {
+            throw exception
+        }
+    }
+
+    val lastArmTime: Flow<Long> = safeDataStore.map { prefs ->
         prefs[LAST_ARM_TIME] ?: 0L
     }
 
-    val selectedThemeIndex: Flow<Int> = context.dataStore.data.map { prefs ->
+    val selectedThemeIndex: Flow<Int> = safeDataStore.map { prefs ->
         prefs[SELECTED_THEME] ?: 0
     }
 
-    val streak: Flow<Int> = context.dataStore.data.map { prefs ->
+    val streak: Flow<Int> = safeDataStore.map { prefs ->
         prefs[STREAK] ?: 14 // Default mock initial streak 14
     }
 
-    val freezeShields: Flow<Int> = context.dataStore.data.map { prefs ->
+    val freezeShields: Flow<Int> = safeDataStore.map { prefs ->
         prefs[FREEZE_SHIELDS] ?: 1 // Default 1 freeze shield
     }
 
-    val lastResetDate: Flow<String> = context.dataStore.data.map { prefs ->
+    val lastResetDate: Flow<String> = safeDataStore.map { prefs ->
         prefs[LAST_RESET_DATE] ?: ""
     }
 
