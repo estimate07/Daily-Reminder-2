@@ -18,6 +18,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.ui.RovioViewModel
 import com.example.ui.components.AuditTab
 import com.example.ui.components.BottomNavTabBar
+import com.example.ui.components.DailySummaryTab
 import com.example.ui.components.EditTitleDialog
 import com.example.ui.components.HistoryDrawer
 import com.example.ui.components.HitEffectOverlay
@@ -82,6 +83,14 @@ fun MainScreen(
                     )
                 }
                 1 -> {
+                    DailySummaryTab(
+                        slots = todaySlots,
+                        streak = streak,
+                        onSlotClick = { viewModel.handleStatusClick(it) },
+                        onTitleClick = { viewModel.openEditDialog(it) }
+                    )
+                }
+                2 -> {
                     TimeVaultTab(
                         slots = todaySlots,
                         rushAttempts = rushAttempts,
@@ -90,7 +99,7 @@ fun MainScreen(
                         onClearToast = { viewModel.clearVaultToast() }
                     )
                 }
-                2 -> {
+                3 -> {
                     AuditTab(
                         archiveDays = archiveDays
                     )

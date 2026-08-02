@@ -29,7 +29,7 @@ fun BottomNavTabBar(
     modifier: Modifier = Modifier
 ) {
     val colors = AppTheme.colors
-    val tabTitles = listOf("TODAY", "TIME VAULT", "AUDIT")
+    val tabTitles = listOf("TODAY", "SUMMARY", "VAULT", "AUDIT")
 
     Box(
         modifier = modifier
