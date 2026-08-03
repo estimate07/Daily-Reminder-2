@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [ShortSlot::class, ArchiveDay::class, RushAttempt::class, StackedAttempt::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -22,7 +22,7 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "rovio_daily_database"
+                    "rovio_daily_database_v3"
                 )
                 .fallbackToDestructiveMigration()
                 .build()
